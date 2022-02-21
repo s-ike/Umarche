@@ -8,8 +8,11 @@ class ComponentTestController extends Controller
 {
     public function showComponent1()
     {
-        // フォルダ名をドットで繋げる
-        return view('tests.component-test1');
+        $message = 'メッセージ';
+        return view(
+            'tests.component-test1',
+            compact('message')
+        );
     }
 
     public function showComponent2()
