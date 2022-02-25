@@ -10,4 +10,15 @@ class Stock extends Model
     use HasFactory;
 
     protected $table = 't_stocks';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'product_id',
+        'type',
+        'quantity',
+    ];
 }
