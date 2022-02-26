@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Image;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UploadImageRequest;
@@ -123,7 +124,40 @@ class ImageController extends Controller
     public function destroy($id)
     {
         $image = Image::findOrFail($id);
+
+        $iamgeInProducts = Product::where('image1', $image->id)
+            ->orWhere('image2', $image->id)
+            ->orWhere('image3', $image->id)
+            ->orWhere('image4', $image->id)
+            ->get();
+        if ($iamgeInProducts) {
+            $iamgeInProducts->each(function ($product) use ($image) {
+                $has_changed = false;
+                if ($product->image1 === $image->id) {
+                    $product->image1 = null;
+                    $has_changed = true;
+                }
+                if ($product->image2 === $image->id) {
+                    $product->image2 = null;
+                    $has_changed = true;
+                }
+                if ($product->image3 === $image->id) {
+                    $product->image3 = null;
+                    $has_changed = true;
+                }
+                if ($product->image4 === $image->id) {
+                    $product->image4 = null;
+                    $has_changed = true;
+                }
+                if ($has_changed) {
+                    $product->save();
+                }
+            });
+        }
+
         $filePath = 'public/products/'.$image->filename;
+
+
 
         if (Storage::exists($filePath)) {
             Storage::delete($filePath);
