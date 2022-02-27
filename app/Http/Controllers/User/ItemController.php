@@ -4,10 +4,32 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
+    /**
+     * 新しいOwnersControllerインスタンスの生成
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:users');
+    //     $this->middleware(function ($request, $next) {
+    //         $id = $request->route()->parameter('product');
+    //         if (!is_null($id)) {
+    //             $productsOwnerId = Product::findOrFail($id)->shop->owner->id;
+    //             $productsOwnerId = (int)$productsOwnerId;
+    //             if ($productsOwnerId !== Auth::id()) {
+    //                 abort(404);
+    //             }
+    //         }
+    //         return $next($request);
+    //     });
+    }
+
     public function index()
     {
         $stocks = DB::table('t_stocks')
@@ -40,5 +62,11 @@ class ItemController extends Controller
 
         // dd($stocks, $products);
         return view('user.index', compact('products'));
+    }
+
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('user.show', compact('product'));
     }
 }
