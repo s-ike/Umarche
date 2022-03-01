@@ -84,7 +84,6 @@ class CartController extends Controller
                 'quantity' => $product->pivot->quantity * -1,
             ]);
         }
-        dd('test');
 
         // This is your test secret API key.
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
