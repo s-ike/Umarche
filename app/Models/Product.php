@@ -108,4 +108,30 @@ class Product extends Model
                 'image1.filename AS filename'
             );
     }
+
+    /**
+     * 販売中の商品を表示順を設定
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  int                                    $sortOrder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSortOrder($query, $sortOrder)
+    {
+        if ($sortOrder === null || $sortOrder === \Constant::SORT_ORDER['recommend']) {
+            return $query->orderBy('sort_order', 'ASC');
+        }
+        if ($sortOrder === \Constant::SORT_ORDER['higherPrice']) {
+            return $query->orderBy('price', 'DESC');
+        }
+        if ($sortOrder === \Constant::SORT_ORDER['lowerPrice']) {
+            return $query->orderBy('price', 'ASC');
+        }
+        if ($sortOrder === \Constant::SORT_ORDER['later']) {
+            return $query->orderBy('products.created_at', 'DESC');
+        }
+        if ($sortOrder === \Constant::SORT_ORDER['older']) {
+            return $query->orderBy('products.created_at', 'ASC');
+        }
+    }
 }
