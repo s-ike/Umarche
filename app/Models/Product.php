@@ -110,10 +110,10 @@ class Product extends Model
     }
 
     /**
-     * 販売中の商品を表示順を設定
+     * 商品の表示順を設定するスコープ
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  int                                    $sortOrder
+     * @param  string                                 $sortOrder
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSortOrder($query, $sortOrder)
@@ -135,10 +135,38 @@ class Product extends Model
         }
     }
 
+    /**
+     * 商品のカテゴリを設定するスコープ
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string                                 $categoryId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeSelectCategory($query, $categoryId)
     {
         if ($categoryId !== '0') {
             return $query->where('secondary_category_id', $categoryId);
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * 商品のキーワード検索をするスコープ
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  string                                 $keyword
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSearchKeyword($query, $keyword)
+    {
+        if (!is_null($keyword)) {
+            $spaceConvert = mb_convert_kana($keyword, 's'); // 全角スペースを半角に
+            $keywords = preg_split('/[\s]+/', $spaceConvert, -1, PREG_SPLIT_NO_EMPTY);  // 空白で区切る
+            foreach ($keywords as $word) {
+                $query->where('products.name', 'like', '%'.$word.'%');
+            }
+            return $query;
         } else {
             return;
         }
