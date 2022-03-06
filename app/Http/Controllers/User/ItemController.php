@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Mail\TestMail;
+use App\Jobs\SendThanksMail;
 use App\Models\Product;
 use App\Models\Stock;
 use App\Models\PrimaryCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class ItemController extends Controller
 {
@@ -35,8 +34,8 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
-        Mail::to('shunt_i@yahoo.co.jp')
-            ->send(new TestMail());
+        // 非同期に送信
+        SendThanksMail::dispatch();
 
         $categories = PrimaryCategory::with('secondary')
             ->get();
