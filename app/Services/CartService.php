@@ -24,9 +24,7 @@ class CartService
                 ->select('quantity')
                 ->get()
                 ->toArray();
-            // dd($ownerInfo, $product, $quantity);
             $result = array_merge($product[0], $ownerInfo, $quantity[0]);
-            dd($result);
             array_push($products, $result);
         }
         return $products;
