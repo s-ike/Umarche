@@ -50,3 +50,8 @@ storage/app/public/productsフォルダ内に
 ショップの画像も表示する場合は、
 storage/app/public/shopsフォルダを作成し
 画像を保存してください。
+
+メール処理に、キューを使用しています。
+
+必要な場合は `php artisan queue:work` で
+ワーカーを立ち上げて動作確認するようにしてください。
