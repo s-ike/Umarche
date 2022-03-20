@@ -1,5 +1,9 @@
 # モール型ECサイト
 
+Laravel sailで開発しています。
+
+Laravelのバージョンは9です。
+
 ## インストール方法
 
 ```
@@ -10,15 +14,15 @@ composer install
 docker exec -it umarche_laravel.test_1 bash
 npm run dev
 ```
-.env.example をコピーして .env ファイルを作成
+.env.example をコピーして .env ファイルを作成。
 
-.envファイルの中の下記をご利用の環境に合わせて変更してください
+.envファイルの中の下記をご利用の環境に合わせて変更してください。
 - STRIPE_PUBLIC_KEY
 - STRIPE_SECRET_KEY
 
 DB起動後
 
-umarcheというデータベースを作成
+umarcheというデータベースを作成。
 
 その後laravelのコンテナ内で
 
@@ -30,7 +34,7 @@ umarcheというデータベースを作成
 
 `php artisan key:generate`
 
-と入力してキーを生成
+と入力してキーを生成。
 
 
 ## インストール後の実施事項
