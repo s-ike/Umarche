@@ -5,6 +5,7 @@ use App\Http\Controllers\ComponentTestController;
 use App\Http\Controllers\LifeCycleTestController;
 use App\Http\Controllers\User\ItemController;
 use App\Http\Controllers\User\CartController;
+use App\Http\Controllers\User\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,11 @@ Route::prefix('cart')->middleware(['auth:users'])->group(function () {
 
     Route::get('cancel', [CartController::class, 'cancel'])
         ->name('cart.cancel');
+});
+
+Route::prefix('orders')->middleware(['auth:users'])->group(function () {
+    Route::get('/', [OrderController::class, 'index'])
+        ->name('orders.index');
 });
 
 // Route::get('/dashboard', function () {

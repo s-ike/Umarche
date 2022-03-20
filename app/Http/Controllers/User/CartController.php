@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\User;
 use App\Models\Stock;
+use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Services\CartService;
 use App\Jobs\SendThanksMail;
 use App\Jobs\SendOrderedMail;
@@ -111,11 +113,25 @@ class CartController extends Controller
         $user = User::findOrFail(Auth::id());
 
         SendThanksMail::dispatch($products, $user);
+        $totalPrice = 0;
         foreach ($products as $product) {
+            $totalPrice += $product['price'] * $product['quantity'];
             SendOrderedMail::dispatch($product, $user);
         }
-        // dd('ユーザーメール送信テスト');
 
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'total_price' => $totalPrice,
+        ]);
+        foreach ($products as $product) {
+            OrderProduct::create([
+                'order_id' => $order->id,
+                'product_id' => $product['id'],
+                'product_name' => $product['name'],
+                'price' => $product['price'],
+                'quantity' => $product['quantity'],
+            ]);
+        }
         Cart::where('user_id', Auth::id())->delete();
 
         return redirect()->route('user.items.index');
