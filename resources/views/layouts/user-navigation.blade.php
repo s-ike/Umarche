@@ -23,6 +23,11 @@
                         カートを表示
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('user.orders.index')" :active="request()->routeIs('user.orders.index')">
+                        購入履歴を表示
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -75,6 +80,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('user.cart.index')" :active="request()->routeIs('user.cart.index')">
                 カートを表示
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('user.orders.index')" :active="request()->routeIs('user.orders.index')">
+                購入履歴を表示
             </x-responsive-nav-link>
         </div>
 
